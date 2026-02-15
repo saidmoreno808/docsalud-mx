@@ -1,0 +1,21 @@
+{
+  "lab_tests": [
+    {"name": "Glucosa en ayunas", "unit": "mg/dL", "range_min": 70, "range_max": 100, "critical_low": 40, "critical_high": 400},
+    {"name": "Hemoglobina glucosilada (HbA1c)", "unit": "%", "range_min": 4.0, "range_max": 5.6, "critical_low": null, "critical_high": 14.0},
+    {"name": "Colesterol total", "unit": "mg/dL", "range_min": 0, "range_max": 200, "critical_low": null, "critical_high": 400},
+    {"name": "Colesterol HDL", "unit": "mg/dL", "range_min": 40, "range_max": 999, "critical_low": 20, "critical_high": null},
+    {"name": "Colesterol LDL", "unit": "mg/dL", "range_min": 0, "range_max": 100, "critical_low": null, "critical_high": 300},
+    {"name": "Trigliceridos", "unit": "mg/dL", "range_min": 0, "range_max": 150, "critical_low": null, "critical_high": 500},
+    {"name": "Creatinina", "unit": "mg/dL", "range_min": 0.7, "range_max": 1.3, "critical_low": null, "critical_high": 10.0},
+    {"name": "Urea", "unit": "mg/dL", "range_min": 10, "range_max": 50, "critical_low": null, "critical_high": 200},
+    {"name": "Acido urico", "unit": "mg/dL", "range_min": 3.5, "range_max": 7.2, "critical_low": null, "critical_high": 15.0},
+    {"name": "Hemoglobina", "unit": "g/dL", "range_min": 12.0, "range_max": 17.5, "critical_low": 7.0, "critical_high": 20.0},
+    {"name": "Hematocrito", "unit": "%", "range_min": 36, "range_max": 54, "critical_low": 20, "critical_high": 65},
+    {"name": "Leucocitos", "unit": "cel/uL", "range_min": 4500, "range_max": 11000, "critical_low": 2000, "critical_high": 30000},
+    {"name": "Plaquetas", "unit": "cel/uL", "range_min": 150000, "range_max": 400000, "critical_low": 50000, "critical_high": 1000000},
+    {"name": "TGO (AST)", "unit": "U/L", "range_min": 0, "range_max": 40, "critical_low": null, "critical_high": 500},
+    {"name": "TGP (ALT)", "unit": "U/L", "range_min": 0, "range_max": 41, "critical_low": null, "critical_high": 500},
+    {"name": "Presion arterial sistolica", "unit": "mmHg", "range_min": 90, "range_max": 120, "critical_low": 70, "critical_high": 180},
+    {"name": "Presion arterial diastolica", "unit": "mmHg", "range_min": 60, "range_max": 80, "critical_low": 40, "critical_high": 120}
+  ]
+}

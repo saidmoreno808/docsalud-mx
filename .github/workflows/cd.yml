@@ -1,0 +1,42 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to AWS EC2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker images
+        run: |
+          docker build -t docsalud-backend ./backend
+          docker build -t docsalud-frontend ./frontend
+
+      - name: Deploy to EC2
+        env:
+          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          echo "$SSH_KEY" > /tmp/ssh_key
+          chmod 600 /tmp/ssh_key
+          ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key $EC2_USER@$EC2_HOST << 'EOF'
+            cd /opt/docsalud-mx
+            git pull origin main
+            docker compose -f docker-compose.prod.yml down
+            docker compose -f docker-compose.prod.yml up -d --build
+            sleep 10
+            curl -f http://localhost:8000/api/v1/health || exit 1
+            echo "Deploy successful"
+          EOF
+
+      - name: Post-deploy healthcheck
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+        run: |
+          sleep 15
+          curl -f "$APP_URL/api/v1/health" || echo "Healthcheck warning: endpoint not reachable"

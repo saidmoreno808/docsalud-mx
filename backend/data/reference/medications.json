@@ -1,0 +1,24 @@
+{
+  "medications": [
+    {"generic_name": "Metformina", "presentations": ["850mg tabletas", "500mg tabletas"], "indications": ["Diabetes mellitus tipo 2"]},
+    {"generic_name": "Glibenclamida", "presentations": ["5mg tabletas"], "indications": ["Diabetes mellitus tipo 2"]},
+    {"generic_name": "Insulina humana", "presentations": ["100 UI/ml solucion inyectable"], "indications": ["Diabetes mellitus"]},
+    {"generic_name": "Losartan", "presentations": ["50mg tabletas", "100mg tabletas"], "indications": ["Hipertension arterial"]},
+    {"generic_name": "Enalapril", "presentations": ["10mg tabletas", "20mg tabletas"], "indications": ["Hipertension arterial", "Insuficiencia cardiaca"]},
+    {"generic_name": "Amlodipino", "presentations": ["5mg tabletas", "10mg tabletas"], "indications": ["Hipertension arterial", "Angina de pecho"]},
+    {"generic_name": "Atorvastatina", "presentations": ["20mg tabletas", "40mg tabletas"], "indications": ["Hipercolesterolemia", "Dislipidemia"]},
+    {"generic_name": "Omeprazol", "presentations": ["20mg capsulas", "40mg capsulas"], "indications": ["ERGE", "Ulcera peptica"]},
+    {"generic_name": "Amoxicilina", "presentations": ["500mg capsulas", "250mg/5ml suspension"], "indications": ["Infecciones bacterianas"]},
+    {"generic_name": "Paracetamol", "presentations": ["500mg tabletas", "120mg/5ml jarabe"], "indications": ["Dolor", "Fiebre"]},
+    {"generic_name": "Ibuprofeno", "presentations": ["400mg tabletas", "200mg tabletas"], "indications": ["Dolor", "Inflamacion", "Fiebre"]},
+    {"generic_name": "Naproxeno", "presentations": ["250mg tabletas", "500mg tabletas"], "indications": ["Dolor", "Inflamacion"]},
+    {"generic_name": "Ciprofloxacino", "presentations": ["500mg tabletas", "250mg tabletas"], "indications": ["Infecciones de vias urinarias", "Infecciones gastrointestinales"]},
+    {"generic_name": "Trimetoprim-Sulfametoxazol", "presentations": ["160/800mg tabletas"], "indications": ["Infecciones de vias urinarias"]},
+    {"generic_name": "Salbutamol", "presentations": ["100mcg/dosis inhalador"], "indications": ["Asma", "Broncoespasmo"]},
+    {"generic_name": "Hidroclorotiazida", "presentations": ["25mg tabletas"], "indications": ["Hipertension arterial", "Edema"]},
+    {"generic_name": "Aspirina", "presentations": ["100mg tabletas", "500mg tabletas"], "indications": ["Prevencion cardiovascular", "Dolor"]},
+    {"generic_name": "Diclofenaco", "presentations": ["100mg tabletas", "75mg/3ml inyectable"], "indications": ["Dolor", "Inflamacion"]},
+    {"generic_name": "Ranitidina", "presentations": ["150mg tabletas"], "indications": ["Ulcera peptica", "ERGE"]},
+    {"generic_name": "Fluoxetina", "presentations": ["20mg capsulas"], "indications": ["Depresion", "Trastorno obsesivo compulsivo"]}
+  ]
+}

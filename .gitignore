@@ -1,0 +1,122 @@
+# ============================================================
+# DocSalud MX — .gitignore
+# Python + Node + Docker + ML + IDE
+# ============================================================
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+*.whl
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# === Testing / Coverage ===
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# === mypy / type checking ===
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# === Jupyter Notebooks ===
+.ipynb_checkpoints/
+
+# === Node / Frontend ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+frontend/dist/
+frontend/build/
+
+# === Environment variables ===
+.env
+.env.local
+.env.*.local
+
+# === Docker ===
+docker-compose.override.yml
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === ML Models (large binary files) ===
+backend/models/document_classifier/*.pkl
+backend/models/document_classifier/*.joblib
+backend/models/ner_medical/model-best/
+backend/models/ner_medical/model-last/
+backend/models/anomaly_detector/*.h5
+backend/models/anomaly_detector/*.keras
+backend/models/transformer_classifier/*.pt
+backend/models/transformer_classifier/*.bin
+*.onnx
+
+# === Data (raw data never committed) ===
+backend/data/raw/*
+!backend/data/raw/.gitkeep
+
+# === Logs ===
+*.log
+logs/
+
+# === Secrets / Credentials ===
+*.pem
+*.key
+credentials.json
+service-account.json
+
+# === Terraform ===
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# === Misc ===
+*.bak
+*.tmp
+*.temp
+
+# === Claude Code agent artifacts ===
+.agent/
+.agents/
+.mcp.json
+.mcp-setup-instructions.md
+.mcp-status.md

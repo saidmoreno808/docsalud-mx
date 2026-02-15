@@ -1,0 +1,24 @@
+{
+  "codes": [
+    {"code": "E11", "description": "Diabetes mellitus tipo 2"},
+    {"code": "E11.9", "description": "Diabetes mellitus tipo 2, sin complicaciones"},
+    {"code": "E11.2", "description": "Diabetes mellitus tipo 2, con complicaciones renales"},
+    {"code": "E11.3", "description": "Diabetes mellitus tipo 2, con complicaciones oftalmicas"},
+    {"code": "I10", "description": "Hipertension esencial (primaria)"},
+    {"code": "I11", "description": "Enfermedad cardiaca hipertensiva"},
+    {"code": "E78.0", "description": "Hipercolesterolemia pura"},
+    {"code": "E78.5", "description": "Hiperlipidemia no especificada"},
+    {"code": "J06.9", "description": "Infeccion aguda de vias respiratorias superiores"},
+    {"code": "J18.9", "description": "Neumonia no especificada"},
+    {"code": "K29.7", "description": "Gastritis no especificada"},
+    {"code": "N39.0", "description": "Infeccion de vias urinarias, sitio no especificado"},
+    {"code": "M54.5", "description": "Lumbago no especificado"},
+    {"code": "R50.9", "description": "Fiebre no especificada"},
+    {"code": "R51", "description": "Cefalea"},
+    {"code": "E66.9", "description": "Obesidad no especificada"},
+    {"code": "F32.9", "description": "Episodio depresivo no especificado"},
+    {"code": "G43.9", "description": "Migrana no especificada"},
+    {"code": "K21.0", "description": "Enfermedad por reflujo gastroesofagico con esofagitis"},
+    {"code": "B37.3", "description": "Candidiasis de la vulva y de la vagina"}
+  ]
+}
