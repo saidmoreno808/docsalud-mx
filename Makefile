@@ -2,13 +2,16 @@
 # DocSalud MX — Makefile
 # ============================================================
 
-.PHONY: help setup dev test test-unit test-integration lint format \
-        docker-build docker-up docker-down migrate seed \
-        train-ner train-classifier generate-data clean
+.PHONY: help setup dev test test-unit test-integration test-e2e test-frontend \
+        lint format docker-build docker-up docker-down docker-logs \
+        docker-prod-build docker-prod-up docker-prod-down docker-prod-logs \
+        migrate migrate-create seed \
+        train-ner train-classifier train-transformer generate-data evaluate \
+        clean pre-commit-install ssl-init backup
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-25s\033[0m %s\n", $$1, $$2}'
 
 # ── Setup ───────────────────────────────────────────────────
 setup: ## Install dependencies, create .env, download models
@@ -16,6 +19,11 @@ setup: ## Install dependencies, create .env, download models
 	cd backend && pip install -r requirements-dev.txt
 	cd backend && python -m spacy download es_core_news_lg
 	cd frontend && npm install
+	$(MAKE) pre-commit-install
+
+pre-commit-install: ## Install pre-commit hooks
+	pip install pre-commit
+	pre-commit install
 
 # ── Development ─────────────────────────────────────────────
 dev: ## Start docker-compose dev with hot-reload
@@ -43,28 +51,48 @@ test-e2e: ## Run e2e tests only
 test-frontend: ## Run frontend tests
 	cd frontend && npm run test
 
+test-all: ## Run backend + frontend tests
+	$(MAKE) test
+	$(MAKE) test-frontend
+
 # ── Code Quality ────────────────────────────────────────────
 lint: ## Run all linters
 	cd backend && python -m ruff check app/ tests/
-	cd backend && python -m mypy app/
+	cd backend && python -m mypy app/ --ignore-missing-imports
 	cd frontend && npm run lint 2>/dev/null || true
 
 format: ## Format code (Black + isort)
-	cd backend && python -m black app/ tests/
-	cd backend && python -m isort app/ tests/
+	cd backend && python -m black app/ tests/ --line-length 100
+	cd backend && python -m isort app/ tests/ --profile black --line-length 100
 
-# ── Docker ──────────────────────────────────────────────────
-docker-build: ## Build Docker images
+# ── Docker (Development) ────────────────────────────────────
+docker-build: ## Build dev Docker images
 	docker compose build
 
-docker-up: ## Start production containers
+docker-up: ## Start dev containers
 	docker compose up -d
 
-docker-down: ## Stop all containers
+docker-down: ## Stop dev containers
 	docker compose down
 
-docker-logs: ## Tail container logs
+docker-logs: ## Tail dev container logs
 	docker compose logs -f
+
+# ── Docker (Production) ─────────────────────────────────────
+docker-prod-build: ## Build production Docker images
+	docker compose -f docker-compose.prod.yml build
+
+docker-prod-up: ## Start production containers
+	docker compose -f docker-compose.prod.yml up -d
+
+docker-prod-down: ## Stop production containers
+	docker compose -f docker-compose.prod.yml down
+
+docker-prod-logs: ## Tail production container logs
+	docker compose -f docker-compose.prod.yml logs -f
+
+docker-prod-restart: ## Restart production backend
+	docker compose -f docker-compose.prod.yml restart backend nginx
 
 # ── Database ────────────────────────────────────────────────
 migrate: ## Run Alembic migrations
@@ -92,6 +120,21 @@ train-transformer: ## Fine-tune transformer model
 evaluate: ## Evaluate all models
 	cd backend && python scripts/evaluate_models.py
 
+# ── SSL / Certbot ───────────────────────────────────────────
+ssl-init: ## Initialize SSL certificate with Let's Encrypt (usage: make ssl-init DOMAIN=yourdomain.com)
+	docker compose -f docker-compose.prod.yml run --rm certbot \
+		certbot certonly --webroot -w /var/www/certbot \
+		-d $(DOMAIN) --agree-tos --no-eff-email --email admin@$(DOMAIN)
+	docker compose -f docker-compose.prod.yml restart nginx
+
+ssl-renew: ## Renew SSL certificates
+	docker compose -f docker-compose.prod.yml run --rm certbot certbot renew --quiet
+	docker compose -f docker-compose.prod.yml restart nginx
+
+# ── Backup ──────────────────────────────────────────────────
+backup: ## Backup PostgreSQL database
+	bash infrastructure/scripts/backup.sh
+
 # ── Cleanup ─────────────────────────────────────────────────
 clean: ## Clean build artifacts
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
@@ -99,4 +142,8 @@ clean: ## Clean build artifacts
 	find . -type d -name .mypy_cache -exec rm -rf {} + 2>/dev/null || true
 	find . -name "*.pyc" -delete 2>/dev/null || true
 	rm -rf backend/htmlcov backend/.coverage
-	rm -rf frontend/node_modules frontend/dist
+	rm -rf frontend/dist
+
+clean-docker: ## Remove all Docker artifacts (containers, images, volumes)
+	docker compose down -v --rmi all 2>/dev/null || true
+	docker compose -f docker-compose.prod.yml down -v --rmi all 2>/dev/null || true
