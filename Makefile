@@ -7,7 +7,7 @@
         docker-prod-build docker-prod-up docker-prod-down docker-prod-logs \
         migrate migrate-create seed \
         train-ner train-classifier train-transformer generate-data evaluate \
-        clean pre-commit-install ssl-init backup
+        clean pre-commit-install ssl-init backup deploy healthcheck restore-db
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
@@ -131,9 +131,20 @@ ssl-renew: ## Renew SSL certificates
 	docker compose -f docker-compose.prod.yml run --rm certbot certbot renew --quiet
 	docker compose -f docker-compose.prod.yml restart nginx
 
-# ── Backup ──────────────────────────────────────────────────
+# ── Deploy ─────────────────────────────────────────────────
+deploy: ## Deploy to production (usage: make deploy BRANCH=main)
+	bash infrastructure/scripts/deploy.sh $(BRANCH)
+
+# ── Monitoring ─────────────────────────────────────────────
+healthcheck: ## Run full system healthcheck
+	bash infrastructure/scripts/healthcheck.sh --verbose
+
+# ── Backup & Restore ──────────────────────────────────────
 backup: ## Backup PostgreSQL database
 	bash infrastructure/scripts/backup.sh
+
+restore-db: ## Restore database from backup (usage: make restore-db FILE=path/to/backup.sql.gz)
+	bash infrastructure/scripts/restore-db.sh $(FILE)
 
 # ── Cleanup ─────────────────────────────────────────────────
 clean: ## Clean build artifacts
