@@ -8,8 +8,8 @@
 
 *Digitalizando la salud rural mexicana con Inteligencia Artificial*
 
-[![CI](https://github.com/saidbriones/docsalud-mx/actions/workflows/ci.yml/badge.svg)](https://github.com/saidbriones/docsalud-mx/actions/workflows/ci.yml)
-[![CD](https://github.com/saidbriones/docsalud-mx/actions/workflows/cd.yml/badge.svg)](https://github.com/saidbriones/docsalud-mx/actions/workflows/cd.yml)
+[![CI](https://github.com/saidmoreno808/docsalud-mx/actions/workflows/ci.yml/badge.svg)](https://github.com/saidmoreno808/docsalud-mx/actions/workflows/ci.yml)
+[![CD](https://github.com/saidmoreno808/docsalud-mx/actions/workflows/cd.yml/badge.svg)](https://github.com/saidmoreno808/docsalud-mx/actions/workflows/cd.yml)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev)
@@ -21,7 +21,7 @@
 [![Coverage: 80%+](https://img.shields.io/badge/coverage-80%25-16A34A)](./backend/tests)
 [![Deploy: AWS EC2](https://img.shields.io/badge/deploy-AWS%20EC2-FF9900?logo=amazonaws&logoColor=white)](https://docsaludmx.ochoceroocho.mx)
 
-[Demo en vivo](https://docsaludmx.ochoceroocho.mx) · [API Docs](https://docsaludmx.ochoceroocho.mx/docs) · [Reportar Bug](https://github.com/saidbriones/docsalud-mx/issues) · [Solicitar Feature](https://github.com/saidbriones/docsalud-mx/issues)
+[Demo en vivo](https://docsaludmx.ochoceroocho.mx) · [API Docs](https://docsaludmx.ochoceroocho.mx/docs) · [Reportar Bug](https://github.com/saidmoreno808/docsalud-mx/issues) · [Solicitar Feature](https://github.com/saidmoreno808/docsalud-mx/issues)
 
 </div>
 
@@ -238,7 +238,7 @@ graph TB
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/saidbriones/docsalud-mx.git
+git clone https://github.com/saidmoreno808/docsalud-mx.git
 cd docsalud-mx
 
 # 2. Configurar entorno
@@ -470,8 +470,8 @@ Ver [CONTRIBUTING.md](./CONTRIBUTING.md) para mas detalles.
 
 **Said Ivan Briones Moreno** — Senior AI Solutions Engineer
 
-[![GitHub](https://img.shields.io/badge/GitHub-saidbriones-181717?logo=github)](https://github.com/saidbriones)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-saidbriones-0A66C2?logo=linkedin)](https://linkedin.com/in/saidbriones)
+[![GitHub](https://img.shields.io/badge/GitHub-saidmoreno808-181717?logo=github)](https://github.com/saidmoreno808)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-saidmoreno808-0A66C2?logo=linkedin)](https://linkedin.com/in/saidmoreno808)
 
 ---
 
