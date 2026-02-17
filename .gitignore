@@ -120,3 +120,12 @@ service-account.json
 .mcp.json
 .mcp-setup-instructions.md
 .mcp-status.md
+.claude/
+
+# === Uploads (user documents — never commit) ===
+backend/uploads/
+
+# === Local docs (not for repo) ===
+PASOS_FINALES.md
+DEPLOYMENT_SUMMARY.md
+AWS_DEPLOY.md
