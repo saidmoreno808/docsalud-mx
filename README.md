@@ -1,12 +1,14 @@
-# DocSalud MX
+# ClinicaIA — Diagnóstico Preventivo con IA para México
+
+> Basado en DocSalud MX | Powered by DigitalOcean Gradient AI
 
 <div align="center">
 
-![DocSalud MX Banner](https://img.shields.io/badge/DocSalud-MX-0F766E?style=for-the-badge&logo=heart&logoColor=white)
+![ClinicaIA Banner](https://img.shields.io/badge/ClinicaIA-DO%20Gradient%20AI-0080FF?style=for-the-badge&logo=digitalocean&logoColor=white)
 
-**Sistema de Digitalizacion Inteligente de Expedientes Clinicos**
+**Sistema de Diagnóstico Preventivo con IA para Comunidades Rurales de México**
 
-*Digitalizando la salud rural mexicana con Inteligencia Artificial*
+*Digitalizando la salud rural mexicana con DigitalOcean Gradient AI*
 
 [![CI](https://github.com/saidmoreno808/docsalud-mx/actions/workflows/ci.yml/badge.svg)](https://github.com/saidmoreno808/docsalud-mx/actions/workflows/ci.yml)
 [![CD](https://github.com/saidmoreno808/docsalud-mx/actions/workflows/cd.yml/badge.svg)](https://github.com/saidmoreno808/docsalud-mx/actions/workflows/cd.yml)
@@ -19,7 +21,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-F59E0B.svg)](./LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000)](https://github.com/psf/black)
 [![Coverage: 80%+](https://img.shields.io/badge/coverage-80%25-16A34A)](./backend/tests)
-[![Deploy: AWS EC2](https://img.shields.io/badge/deploy-AWS%20EC2-FF9900?logo=amazonaws&logoColor=white)](https://docsaludmx.ochoceroocho.mx)
+[![DO Gradient AI](https://img.shields.io/badge/DO-Gradient%20AI-0080FF?logo=digitalocean&logoColor=white)](https://docs.digitalocean.com/products/gen-ai/)
+[![Deploy: DO App Platform](https://img.shields.io/badge/deploy-DO%20App%20Platform-0080FF?logo=digitalocean)](https://cloud.digitalocean.com/apps)
 
 [Demo en vivo](https://docsaludmx.ochoceroocho.mx) · [API Docs](https://docsaludmx.ochoceroocho.mx/docs) · [Reportar Bug](https://github.com/saidmoreno808/docsalud-mx/issues) · [Solicitar Feature](https://github.com/saidmoreno808/docsalud-mx/issues)
 
@@ -50,6 +53,31 @@ DocSalud MX es un sistema de AI que transforma fotografias de expedientes fisico
 | **Clustering de Riesgo** | Agrupa pacientes por perfil de riesgo con K-Means/DBSCAN |
 | **RAG Medico** | Responde preguntas en lenguaje natural sobre expedientes con Groq LLM + pgvector |
 | **Alertas Inteligentes** | Genera alertas clinicas automaticas por valores fuera de rango |
+| **Diagnóstico Predictivo** | Motor de diagnóstico preventivo con DO Gradient AI (Llama 3.3 70B) |
+
+---
+
+## DigitalOcean Gradient AI
+
+ClinicaIA usa [DigitalOcean Gradient AI](https://docs.digitalocean.com/products/gen-ai/) como el núcleo de su motor de diagnóstico predictivo:
+
+| Capacidad Gradient AI | Uso en ClinicaIA |
+|----------------------|------------------|
+| **Serverless LLM Inference** | Motor de diagnóstico clínico (Llama 3.3 70B) analiza el expediente y genera recomendaciones en español |
+| **Model Access Keys** | Autenticación segura sin infraestructura GPU propia |
+| **30+ modelos disponibles** | Llama 3.3 70B seleccionado por razonamiento clínico en español |
+
+Flujo de diagnóstico:
+
+```
+Expediente en papel
+    → OCR + NLP (OpenCV · Tesseract · SpaCy)
+    → Risk Score ML (RiskClusterer K-Means)
+    → Anomaly Detection (Autoencoder TF/Keras)
+    → RAG context (pgvector similarity search)
+    → DO Gradient AI — Llama 3.3 70B
+    → DiagnosticResult → Dashboard React
+```
 
 ---
 
@@ -175,6 +203,16 @@ graph TB
 <td>Embeddings locales + busqueda semantica + respuestas LLM</td>
 </tr>
 <tr>
+<td><b>DO Gradient AI</b></td>
+<td>
+
+[![DO Gradient AI](https://img.shields.io/badge/DO-Gradient%20AI-0080FF?logo=digitalocean&logoColor=white)](https://docs.digitalocean.com/products/gen-ai/)
+
+</td>
+<td>Llama 3.3 Instruct 70B · serverless</td>
+<td>Motor diagnóstico predictivo — analiza expedientes y genera recomendaciones clínicas en español</td>
+</tr>
+<tr>
 <td><b>API</b></td>
 <td>
 
@@ -262,12 +300,31 @@ make dev
 # Groq API (gratis en console.groq.com)
 GROQ_API_KEY=gsk_...
 
+# DO Gradient AI (cloud.digitalocean.com/gen-ai → Model Access Keys)
+DO_GRADIENT_API_KEY=your_model_access_key
+
 # Supabase (gratis en supabase.com)
 SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_KEY=eyJhbG...
 
 # Generados automaticamente
 SECRET_KEY=$(openssl rand -hex 32)
+```
+
+### Deploy en DigitalOcean
+
+```bash
+# Autenticar doctl
+doctl auth init --access-token $DO_API_TOKEN
+
+# Crear la app en DO App Platform
+doctl apps create --spec .do/app.yaml
+
+# Crear base de datos managed PostgreSQL
+make do-db-setup
+
+# Ver logs en tiempo real
+make do-logs
 ```
 
 ---
@@ -458,7 +515,10 @@ Ver [CONTRIBUTING.md](./CONTRIBUTING.md) para mas detalles.
 - [x] Fase 6: Frontend React dashboard
 - [x] Fase 7: DevOps Docker + CI/CD
 - [x] Fase 8: Deploy AWS EC2 con HTTPS
-- [ ] Fine-tuning de NER con anotaciones medicas reales
+- [x] Integración DO Gradient AI — motor diagnóstico predictivo
+- [x] Migración a DigitalOcean App Platform
+- [x] Endpoint POST /api/v1/diagnose con PredictiveDiagnosticEngine
+- [ ] Fine-tuning modelo médico con DO Gradient AI training
 - [ ] Integracion con FHIR (estandar internacional de salud)
 - [ ] App movil React Native para captura en campo
 - [ ] Dashboard de analytics para autoridades de salud
@@ -481,4 +541,4 @@ Ver [CONTRIBUTING.md](./CONTRIBUTING.md) para mas detalles.
 
 ---
 
-*Construido con Python 3.11, FastAPI, React 18, y mucho cafe. Desplegado en AWS.*
+*Construido con Python 3.11, FastAPI, React 18, y mucho café. Powered by DigitalOcean Gradient AI. Desplegado en DO App Platform.*
