@@ -1,0 +1,52 @@
+name: clinicaia-docsalud
+region: nyc
+
+services:
+  - name: backend
+    github:
+      repo: saidmoreno808/docsalud-mx
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: backend/Dockerfile
+    http_port: 8000
+    instance_count: 1
+    instance_size_slug: professional-xs
+    health_check:
+      http_path: /api/v1/health
+    envs:
+      - key: DO_GRADIENT_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        type: SECRET
+      - key: SECRET_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: GROQ_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: DO_GRADIENT_MODEL
+        scope: RUN_TIME
+        value: llama3-3-70b-instruct
+      - key: ENVIRONMENT
+        scope: RUN_TIME
+        value: production
+
+  - name: frontend
+    github:
+      repo: saidmoreno808/docsalud-mx
+      branch: main
+      deploy_on_push: true
+    source_dir: frontend
+    build_command: npm ci && npm run build
+    output_dir: dist
+    routes:
+      - path: /
+
+databases:
+  - name: docsalud-db
+    engine: PG
+    version: "16"
+    num_nodes: 1
+    size: db-s-1vcpu-1gb

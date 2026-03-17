@@ -6,48 +6,20 @@ on:
     tags: ["v*"]
 
 jobs:
-  deploy:
-    name: Deploy to AWS EC2
+  deploy-do:
+    name: Deploy to DigitalOcean App Platform
     runs-on: ubuntu-latest
-    environment: production
+    needs: [test, build]
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run CI checks
-        run: echo "CI checks passed via branch protection rules"
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_API_TOKEN }}
 
-      - name: Deploy to EC2
-        env:
-          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ${{ secrets.EC2_USER }}
+      - name: Deploy to App Platform
         run: |
-          echo "$SSH_KEY" > /tmp/ssh_key
-          chmod 600 /tmp/ssh_key
-          ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key $EC2_USER@$EC2_HOST << 'EOF'
-            cd /opt/docsalud-mx
-            bash infrastructure/scripts/deploy.sh main
-          EOF
-          rm -f /tmp/ssh_key
-
-      - name: Post-deploy healthcheck
-        env:
-          APP_URL: ${{ secrets.APP_URL }}
-        run: |
-          for i in $(seq 1 10); do
-            if curl -sf "$APP_URL/api/v1/health" > /dev/null 2>&1; then
-              echo "Healthcheck passed"
-              exit 0
-            fi
-            echo "Waiting... ($i/10)"
-            sleep 10
-          done
-          echo "WARNING: Healthcheck not reachable from CI runner (may be behind firewall)"
-
-      - name: Notify deploy
-        if: always()
-        run: |
-          echo "Deploy completed at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-          echo "Branch: ${{ github.ref_name }}"
-          echo "Commit: ${{ github.sha }}"
-          echo "Status: ${{ job.status }}"
+          doctl apps update ${{ secrets.DO_APP_ID }} --spec .do/app.yaml
+          doctl apps create-deployment ${{ secrets.DO_APP_ID }}

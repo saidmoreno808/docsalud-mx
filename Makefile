@@ -155,6 +155,25 @@ clean: ## Clean build artifacts
 	rm -rf backend/htmlcov backend/.coverage
 	rm -rf frontend/dist
 
+# ── DigitalOcean App Platform ────────────────────────────────
+do-deploy: ## Create DO App Platform app (first deploy)
+	doctl apps create --spec .do/app.yaml
+
+do-update: ## Update existing DO App Platform spec
+	doctl apps update $(DO_APP_ID) --spec .do/app.yaml
+
+do-deploy-now: ## Force immediate redeployment
+	doctl apps create-deployment $(DO_APP_ID)
+
+do-logs: ## Tail DO App Platform logs
+	doctl apps logs $(DO_APP_ID) --follow
+
+do-status: ## Show DO App Platform app status
+	doctl apps get $(DO_APP_ID)
+
+do-db-setup: ## Create and configure DO Managed PostgreSQL
+	bash infrastructure/scripts/setup_do_database.sh
+
 # ── DO Gradient AI ──────────────────────────────────────────
 gradient-test: ## Run DO Gradient AI unit tests
 	cd backend && python -m pytest tests/unit/test_do_gradient_client.py -v
