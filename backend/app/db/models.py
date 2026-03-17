@@ -190,6 +190,38 @@ class Alert(Base):
     )
 
 
+class DiagnosticResult(Base):
+    """Resultado de diagnostico predictivo generado por DO Gradient AI."""
+
+    __tablename__ = "diagnostic_results"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    patient_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("patients.id", ondelete="CASCADE"), nullable=False
+    )
+    risk_score: Mapped[float] = mapped_column(Float, nullable=False)
+    risk_level: Mapped[str] = mapped_column(
+        String(20), nullable=False, comment="BAJO, MODERADO, ALTO, CRITICO"
+    )
+    anomalies: Mapped[list] = mapped_column(JSONB, default=list)
+    recommendations: Mapped[list] = mapped_column(JSONB, default=list)
+    referred_to: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    suggested_studies: Mapped[list] = mapped_column(JSONB, default=list)
+    confidence: Mapped[float] = mapped_column(Float, nullable=False)
+    sources_used: Mapped[list] = mapped_column(JSONB, default=list)
+    gradient_model_used: Mapped[str] = mapped_column(String(100), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+    # Relationships
+    patient: Mapped["Patient"] = relationship("Patient")
+
+    __table_args__ = (Index("idx_diagnostic_patient", "patient_id"),)
+
+
 class DocumentEmbedding(Base):
     """Modelo de embedding vectorial para busqueda semantica."""
 

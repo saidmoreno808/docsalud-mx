@@ -9,6 +9,7 @@ from fastapi import APIRouter
 from app.api.v1.endpoints import (
     alerts,
     classify,
+    diagnose,
     documents,
     health,
     patients,
@@ -27,3 +28,4 @@ api_router.include_router(alerts.router)
 api_router.include_router(search.router)
 api_router.include_router(query.router)
 api_router.include_router(classify.router)
+api_router.include_router(diagnose.router)
