@@ -62,6 +62,13 @@ class Settings(BaseSettings):
     log_level: str = "DEBUG"
     log_format: str = "json"
 
+    # DigitalOcean Gradient AI
+    do_gradient_api_key: str = ""
+    do_gradient_model: str = "llama3-3-70b-instruct"
+    do_api_token: str = ""
+    do_spaces_endpoint: str = "https://nyc3.digitaloceanspaces.com"
+    do_spaces_bucket: str = "clinicaia-docs"
+
     # ML Models
     model_path: str = "./models"
     ner_model_path: str = "./models/ner_medical"

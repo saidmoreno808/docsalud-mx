@@ -155,6 +155,13 @@ clean: ## Clean build artifacts
 	rm -rf backend/htmlcov backend/.coverage
 	rm -rf frontend/dist
 
+# ── DO Gradient AI ──────────────────────────────────────────
+gradient-test: ## Run DO Gradient AI unit tests
+	cd backend && python -m pytest tests/unit/test_do_gradient_client.py -v
+
+gradient-ping: ## Check DO Gradient AI connectivity via /health
+	curl -s http://localhost:8000/api/v1/health | python3 -m json.tool
+
 clean-docker: ## Remove all Docker artifacts (containers, images, volumes)
 	docker compose down -v --rmi all 2>/dev/null || true
 	docker compose -f docker-compose.prod.yml down -v --rmi all 2>/dev/null || true

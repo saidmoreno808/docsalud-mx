@@ -52,6 +52,7 @@ anthropic==0.42.0
 langchain==0.3.14
 langchain-community==0.3.14
 langchain-openai==0.3.0
+gradient-ai
 
 # === Base de datos ===
 sqlalchemy==2.0.36
