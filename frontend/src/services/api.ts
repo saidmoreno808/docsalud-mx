@@ -19,6 +19,7 @@ import type {
   SearchResponse,
   HealthResponse,
 } from "@/types";
+import type { DiagnosticResult } from "@/components/DiagnosticPanel/types";
 
 const api = axios.create({
   baseURL: "/api/v1",
@@ -185,5 +186,12 @@ export async function classifyText(
   body: ClassifyRequest,
 ): Promise<ClassifyResponse> {
   const { data } = await api.post<ClassifyResponse>("/classify", body);
+  return data;
+}
+
+// --- Diagnose ---
+
+export async function diagnosePatient(patientId: string): Promise<DiagnosticResult> {
+  const { data } = await api.post<DiagnosticResult>(`/diagnose?patient_id=${patientId}`);
   return data;
 }
