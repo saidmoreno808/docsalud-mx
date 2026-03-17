@@ -66,6 +66,8 @@ class Settings(BaseSettings):
     do_gradient_api_key: str = ""
     do_gradient_model: str = "llama3-3-70b-instruct"
     do_api_token: str = ""
+    do_spaces_key: str = ""
+    do_spaces_secret: str = ""
     do_spaces_endpoint: str = "https://nyc3.digitaloceanspaces.com"
     do_spaces_bucket: str = "clinicaia-docs"
 
