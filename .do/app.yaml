@@ -13,6 +13,8 @@ services:
     instance_size_slug: professional-xs
     health_check:
       http_path: /api/v1/health
+    routes:
+      - path: /api
     envs:
       - key: DO_GRADIENT_API_KEY
         scope: RUN_TIME
@@ -33,6 +35,7 @@ services:
         scope: RUN_TIME
         value: production
 
+static_sites:
   - name: frontend
     github:
       repo: saidmoreno808/docsalud-mx
@@ -43,6 +46,7 @@ services:
     output_dir: dist
     routes:
       - path: /
+    catchall_document: index.html
 
 databases:
   - name: docsalud-db
