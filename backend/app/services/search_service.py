@@ -22,8 +22,10 @@ from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-# Max characters of raw_text to send as context per document chunk
-_CHUNK_MAX_CHARS = 4000
+# Max characters per document chunk sent to the LLM (keep under ~400 tokens)
+_CHUNK_MAX_CHARS = 1500
+# Max number of documents to include as RAG context
+_MAX_CONTEXT_DOCS = 3
 
 
 class SearchService:
@@ -38,9 +40,41 @@ class SearchService:
         patient_id: uuid.UUID | None = None,
         top_k: int = 5,
     ) -> SearchResponse:
-        """Busqueda semantica sobre documentos."""
+        """Full-text search over documents using SQL ILIKE."""
         logger.info("search_requested", query=query)
-        return SearchResponse(results=[])
+
+        if self._session is None:
+            return SearchResponse(results=[])
+
+        try:
+            from app.api.v1.schemas.query import SearchResultItem
+
+            like = f"%{query}%"
+            stmt = select(Document).where(
+                Document.processing_status == "completed",
+                (Document.raw_text.ilike(like)) | (Document.original_filename.ilike(like)),
+            )
+            if patient_id is not None:
+                stmt = stmt.where(Document.patient_id == patient_id)
+            stmt = stmt.order_by(Document.created_at.desc()).limit(top_k)
+
+            result = await self._session.execute(stmt)
+            documents = list(result.scalars().all())
+
+            items = [
+                SearchResultItem(
+                    document_id=doc.id,
+                    document_type=doc.document_type or "document",
+                    chunk_text=(doc.raw_text or "")[:300],
+                    similarity_score=1.0,
+                    date=str(doc.created_at.date()) if doc.created_at else None,
+                )
+                for doc in documents
+            ]
+            return SearchResponse(results=items)
+        except Exception:
+            logger.exception("search_failed")
+            return SearchResponse(results=[])
 
     async def query(
         self,
@@ -104,7 +138,7 @@ class SearchService:
         if patient_id is not None:
             stmt = stmt.where(Document.patient_id == patient_id)
 
-        stmt = stmt.order_by(Document.created_at.desc()).limit(10)
+        stmt = stmt.order_by(Document.created_at.desc()).limit(_MAX_CONTEXT_DOCS)
         result = await self._session.execute(stmt)  # type: ignore[union-attr]
         documents = list(result.scalars().all())
 

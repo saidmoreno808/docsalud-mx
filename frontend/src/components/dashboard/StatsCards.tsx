@@ -1,5 +1,4 @@
 import { Users, FileText, AlertTriangle, Activity } from "lucide-react";
-import { usePatients } from "@/hooks/usePatients";
 import { useQuery } from "@tanstack/react-query";
 import * as api from "@/services/api";
 import { riskScoreColor, riskScoreLabel } from "@/utils/formatters";
@@ -26,17 +25,22 @@ function StatCard({ icon, label, value, subtitle, colorClass }: StatCardProps) {
 }
 
 export default function StatsCards() {
-  const { data: patients } = usePatients({ page: 1, page_size: 1 });
+  const { data: stats } = useQuery({
+    queryKey: ["stats"],
+    queryFn: () => api.getStats(),
+    refetchInterval: 30000,
+  });
   const { data: alerts } = useQuery({
     queryKey: ["alerts", { is_resolved: false }],
     queryFn: () => api.listAlerts({ is_resolved: false }),
   });
 
-  const totalPatients = patients?.total ?? 0;
+  const totalPatients = stats?.patients ?? 0;
+  const totalDocs = stats?.processed_documents ?? 0;
   const alertCount = alerts?.summary.total ?? 0;
   const criticalCount = alerts?.summary.critical ?? 0;
 
-  const avgRisk = 0;
+  const avgRisk = stats?.avg_risk_score ?? 0;
   const riskLabel = riskScoreLabel(avgRisk);
   const riskColor = riskScoreColor(avgRisk);
 
@@ -51,8 +55,8 @@ export default function StatsCards() {
       <StatCard
         icon={<FileText className="h-6 w-6 text-medical-secondary" />}
         label="Processed Documents"
-        value={0}
-        subtitle="No data yet"
+        value={totalDocs}
+        subtitle={totalDocs === 0 ? "No data yet" : undefined}
         colorClass="bg-blue-50"
       />
       <StatCard

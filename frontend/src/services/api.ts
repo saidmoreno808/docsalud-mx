@@ -41,6 +41,11 @@ api.interceptors.response.use(
 
 // --- Health ---
 
+export async function getStats(): Promise<{ patients: number; processed_documents: number; avg_risk_score: number }> {
+  const { data } = await api.get("/stats");
+  return data;
+}
+
 export async function getHealth(): Promise<HealthResponse> {
   const { data } = await api.get<HealthResponse>("/health");
   return data;
