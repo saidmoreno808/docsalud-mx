@@ -9,11 +9,14 @@ from sqlalchemy.orm import DeclarativeBase
 
 from app.config import settings
 
+_connect_args = {"ssl": True} if settings.db_requires_ssl else {}
+
 engine = create_async_engine(
     settings.async_database_url,
     pool_size=settings.database_pool_size,
     max_overflow=settings.database_max_overflow,
     echo=settings.app_debug,
+    connect_args=_connect_args,
 )
 
 async_session_factory = async_sessionmaker(

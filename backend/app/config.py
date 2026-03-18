@@ -86,15 +86,25 @@ class Settings(BaseSettings):
     @property
     def async_database_url(self) -> str:
         """
-        Convierte el DATABASE_URL de DO (postgres:// o postgresql://)
-        al formato requerido por SQLAlchemy + asyncpg.
+        Convierte el DATABASE_URL de DO al formato requerido por SQLAlchemy + asyncpg.
+        - postgres:// -> postgresql+asyncpg://
+        - Elimina ?sslmode=... (asyncpg no lo acepta; usa connect_args ssl=True)
         """
+        import re
         url = self.database_url
         if url.startswith("postgres://"):
             url = url.replace("postgres://", "postgresql+asyncpg://", 1)
         elif url.startswith("postgresql://"):
             url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        # Eliminar sslmode del query string (asyncpg lo maneja via connect_args)
+        url = re.sub(r"[?&]sslmode=[^&]*", "", url)
+        url = re.sub(r"\?$", "", url)  # limpiar ? sobrante
         return url
+
+    @property
+    def db_requires_ssl(self) -> bool:
+        """True si el DATABASE_URL original incluye sslmode=require."""
+        return "sslmode" in self.database_url
 
 
 settings = Settings()
