@@ -29,9 +29,11 @@ from app.api.v1.schemas.query import (
     SearchResultItem,
     SourceReference,
 )
+from app.api.v1.schemas.diagnostic import DiagnosticResponse
 from app.api.v1.schemas.upload import ProcessingStatusResponse, UploadResponse
 
 __all__ = [
+    "DiagnosticResponse",
     "AlertListResponse",
     "AlertResolveRequest",
     "AlertResponse",

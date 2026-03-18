@@ -14,6 +14,9 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import PatientTimeline from "./PatientTimeline";
 import AlertsPanel from "@/components/dashboard/AlertsPanel";
+import DiagnosticButton from "@/components/DiagnosticPanel/DiagnosticButton";
+import DiagnosticPanel from "@/components/DiagnosticPanel";
+import type { DiagnosticResult } from "@/components/DiagnosticPanel/types";
 
 type Tab = "documentos" | "alertas";
 
@@ -22,6 +25,9 @@ export default function PatientDetail() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<Tab>("documentos");
   const [showDelete, setShowDelete] = useState(false);
+  const [diagnosticResult, setDiagnosticResult] = useState<DiagnosticResult | null>(null);
+  const [diagnosing, setDiagnosing] = useState(false);
+  const [diagnosisError, setDiagnosisError] = useState<Error | null>(null);
 
   const { data: patient, isLoading } = usePatient(id);
   const { data: docs } = usePatientDocuments(id);
@@ -77,6 +83,17 @@ export default function PatientDetail() {
               <p className="text-lg font-bold">{riskScoreLabel(patient.risk_score)}</p>
               <p className="text-xs">{(patient.risk_score * 100).toFixed(0)}%</p>
             </div>
+
+            {/* DO Gradient AI diagnostic button */}
+            <DiagnosticButton
+              patientId={patient.id}
+              onDiagnosed={(result) => {
+                setDiagnosticResult(result);
+                setDiagnosisError(null);
+                setDiagnosing(false);
+              }}
+            />
+
             <div className="flex flex-col gap-1">
               <button className="btn-secondary text-xs" onClick={() => navigate(`/patients/${id}`)}>
                 <Edit className="h-3 w-3" />
@@ -96,6 +113,13 @@ export default function PatientDetail() {
           </div>
         )}
       </div>
+
+      {/* DiagnosticPanel — shown when a result is available */}
+      <DiagnosticPanel
+        result={diagnosticResult}
+        isLoading={diagnosing}
+        error={diagnosisError}
+      />
 
       {/* Tabs */}
       <div className="flex gap-1 rounded-lg bg-slate-100 p-1">

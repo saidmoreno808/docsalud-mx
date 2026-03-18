@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.config import settings
 from app.db.database import Base
-from app.db.models import Alert, Document, DocumentEmbedding, ExtractedEntity, Patient  # noqa: F401
+from app.db.models import Alert, DiagnosticResult, Document, DocumentEmbedding, ExtractedEntity, Patient  # noqa: F401
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.database_url)
