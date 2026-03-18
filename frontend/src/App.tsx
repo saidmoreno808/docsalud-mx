@@ -19,7 +19,7 @@ function DashboardPage() {
       <div>
         <h1 className="text-xl font-bold text-slate-800">Dashboard</h1>
         <p className="text-sm text-slate-500">
-          Resumen del sistema DocSalud MX
+          Resumen del sistema ClinicaIA
         </p>
       </div>
       <StatsCards />

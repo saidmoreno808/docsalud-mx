@@ -73,7 +73,7 @@ export default function Sidebar({ isOpen, onClose }: Props) {
         </nav>
 
         <div className="border-t border-slate-200 p-4">
-          <p className="text-xs text-slate-400">DocSalud MX v0.7.0</p>
+          <p className="text-xs text-slate-400">ClinicaIA v1.0.0</p>
         </div>
       </aside>
     </>

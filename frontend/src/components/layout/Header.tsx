@@ -27,9 +27,8 @@ export default function Header({ onToggleSidebar }: Props) {
         <div className="flex items-center gap-2">
           <Heart className="h-6 w-6 text-medical-primary" />
           <span className="text-lg font-bold text-medical-primary">
-            DocSalud
+            ClinicaIA
           </span>
-          <span className="text-lg font-light text-slate-400">MX</span>
         </div>
       </div>
 
@@ -43,7 +42,7 @@ export default function Header({ onToggleSidebar }: Props) {
           )}
         </button>
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-medical-primary text-sm font-medium text-white">
-          DS
+          CI
         </div>
       </div>
     </header>

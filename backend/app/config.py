@@ -1,5 +1,5 @@
 """
-Configuracion centralizada de DocSalud MX.
+Configuracion centralizada de ClinicaIA.
 
 Usa pydantic-settings para cargar variables de entorno con validacion de tipos.
 """
