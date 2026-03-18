@@ -50,19 +50,22 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     except Exception as e:
         logger.error("database_connection_failed", error=str(e))
 
-    # Grant schema permissions then create all tables
+    # Transaction 1: grant CREATE on public schema (commits independently)
     try:
-        from app.db.database import Base, engine
+        from app.db.database import engine
         from sqlalchemy import text
 
         async with engine.begin() as conn:
-            # PG 15+ restricts CREATE on public schema — grant to current user
-            try:
-                await conn.execute(text("GRANT CREATE ON SCHEMA public TO CURRENT_USER"))
-                logger.info("schema_grant_ok")
-            except Exception as grant_err:
-                logger.warning("schema_grant_skipped", error=str(grant_err))
-            # Create all tables (idempotent)
+            await conn.execute(text("GRANT CREATE ON SCHEMA public TO CURRENT_USER"))
+        logger.info("schema_grant_ok")
+    except Exception as grant_err:
+        logger.warning("schema_grant_skipped", error=str(grant_err))
+
+    # Transaction 2: create all tables (uses granted privilege from tx1)
+    try:
+        from app.db.database import Base, engine
+
+        async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
         logger.info("database_tables_ready")
     except Exception as e:
