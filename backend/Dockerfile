@@ -17,13 +17,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Install Python dependencies (cached layer)
-COPY requirements.txt .
+# Install Python dependencies (slim production set — avoids OOM in builder)
+COPY requirements-prod.txt requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements-prod.txt
 
-# Download SpaCy Spanish model
-RUN python -m spacy download es_core_news_lg
+# Download SpaCy Spanish model (small — lg causes OOM on builder)
+RUN python -m spacy download es_core_news_sm
 
 # Download NLTK data
 RUN python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('stopwords'); nltk.download('wordnet')"

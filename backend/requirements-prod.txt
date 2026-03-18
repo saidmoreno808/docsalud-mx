@@ -1,0 +1,54 @@
+# ============================================================
+# ClinicaIA — Dependencias de PRODUCCION (slim para DO App Platform)
+# Excluye paquetes ML pesados (torch, tensorflow) que OOM el builder.
+# Los modelos ML se reemplazaron por fallbacks ligeros en produccion.
+# ============================================================
+
+# === FastAPI y servidor ===
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-multipart==0.0.19
+httpx==0.28.1
+
+# === OCR y Vision Artificial ===
+opencv-python-headless==4.10.0.84
+pytesseract==0.3.13
+Pillow==11.1.0
+PyMuPDF==1.25.3
+pdf2image==1.17.0
+
+# === NLP ===
+spacy==3.8.4
+nltk==3.9.1
+beautifulsoup4==4.12.3
+requests==2.32.3
+
+# === Machine Learning (ligeros) ===
+scikit-learn==1.6.1
+numpy==1.26.4
+pandas==2.2.3
+scipy==1.15.1
+joblib==1.4.2
+
+# === RAG y LLMs ===
+openai==1.58.1
+groq==0.13.0
+
+# === Base de datos ===
+sqlalchemy==2.0.36
+asyncpg==0.30.0
+alembic==1.14.1
+pgvector==0.3.6
+
+# === Cache ===
+redis==5.2.1
+
+# === DevOps y Monitoreo ===
+prometheus-client==0.21.1
+structlog==24.4.0
+
+# === Auth ===
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
