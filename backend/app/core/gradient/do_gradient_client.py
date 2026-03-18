@@ -1,14 +1,12 @@
 """
-Cliente oficial para DigitalOcean Gradient AI SDK.
+Cliente para DigitalOcean Gradient AI / GenAI Platform.
 
-Wrapper async sobre el SDK sincrono de Gradient, compatible con la interfaz
-que antes usaba Groq para no romper ningun modulo externo.
+Usa el SDK oficial de OpenAI apuntando al endpoint OpenAI-compatible de DO,
+compatible con la interfaz que antes usaba Groq para no romper ningun modulo externo.
 """
 
-import asyncio
-
 import structlog
-from gradient import Gradient
+from openai import AsyncOpenAI
 
 from app.config import settings
 
@@ -16,17 +14,21 @@ logger = structlog.get_logger()
 
 
 class DOGradientClient:
-    """Cliente oficial para DigitalOcean Gradient AI SDK."""
+    """Cliente para DigitalOcean GenAI Platform via API OpenAI-compatible."""
 
-    def __init__(self, model_access_key: str | None = None, model: str | None = None):
-        self.model_access_key = model_access_key or settings.do_gradient_api_key
+    def __init__(self, api_key: str | None = None, model: str | None = None):
+        self.api_key = api_key or settings.do_gradient_api_key
         self.model = model or settings.do_gradient_model
-        self._client = None
+        self.base_url = settings.do_gradient_base_url
+        self._client: AsyncOpenAI | None = None
 
     @property
-    def client(self) -> Gradient:
+    def client(self) -> AsyncOpenAI:
         if self._client is None:
-            self._client = Gradient(model_access_key=self.model_access_key)
+            self._client = AsyncOpenAI(
+                api_key=self.api_key,
+                base_url=self.base_url,
+            )
         return self._client
 
     async def complete(
@@ -43,26 +45,22 @@ class DOGradientClient:
         Returns:
             Texto de respuesta del modelo.
         """
-        loop = asyncio.get_event_loop()
         all_messages: list[dict] = []
         if system:
             all_messages.append({"role": "system", "content": system})
         all_messages.extend(messages)
 
-        response = await loop.run_in_executor(
-            None,
-            lambda: self.client.chat.completions.create(
-                messages=all_messages,
-                model=self.model,
-                max_tokens=max_tokens,
-            ),
+        response = await self.client.chat.completions.create(
+            messages=all_messages,  # type: ignore[arg-type]
+            model=self.model,
+            max_tokens=max_tokens,
         )
         logger.info(
             "gradient_ai_call",
             model=self.model,
-            tokens=response.usage.total_tokens,
+            tokens=response.usage.total_tokens if response.usage else None,
         )
-        return response.choices[0].message.content
+        return response.choices[0].message.content or ""
 
     async def embed(self, texts: list[str]) -> list[list[float]]:
         """
@@ -74,13 +72,9 @@ class DOGradientClient:
         Returns:
             Lista de vectores de embedding.
         """
-        loop = asyncio.get_event_loop()
-        response = await loop.run_in_executor(
-            None,
-            lambda: self.client.embeddings.create(
-                input=texts,
-                model="text-embedding-ada-002",
-            ),
+        response = await self.client.embeddings.create(
+            input=texts,
+            model="text-embedding-ada-002",
         )
         return [d.embedding for d in response.data]
 

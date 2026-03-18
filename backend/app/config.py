@@ -65,6 +65,7 @@ class Settings(BaseSettings):
     # DigitalOcean Gradient AI
     do_gradient_api_key: str = ""
     do_gradient_model: str = "llama3-3-70b-instruct"
+    do_gradient_base_url: str = "https://api.digitalocean.com/v2/gen-ai/v1"
     do_api_token: str = ""
     do_spaces_key: str = ""
     do_spaces_secret: str = ""
