@@ -78,7 +78,9 @@ export function statusColor(status: string): string {
 }
 
 export function formatConfidence(confidence: number): string {
-  return `${(confidence * 100).toFixed(1)}%`;
+  // Backend may return 0-1 (decimal) or 0-100 (percentage) — normalize to percentage
+  const pct = confidence > 1 ? confidence : confidence * 100;
+  return `${pct.toFixed(1)}%`;
 }
 
 export function formatProcessingTime(ms: number): string {

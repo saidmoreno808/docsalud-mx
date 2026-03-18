@@ -4,6 +4,7 @@ Servicio de procesamiento de documentos.
 Orquesta el pipeline completo: OCR -> NLP -> ML -> Storage.
 """
 
+import re
 import time
 import uuid
 from pathlib import Path
@@ -12,6 +13,7 @@ from typing import Any
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.repositories.document_repo import DocumentRepository
+from app.db.repositories.patient_repo import PatientRepository
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -25,6 +27,7 @@ class DocumentService:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
         self._doc_repo = DocumentRepository(session)
+        self._patient_repo = PatientRepository(session)
 
     async def upload_and_process(
         self,
@@ -100,12 +103,88 @@ class DocumentService:
         if entities:
             await self._doc_repo.add_entities(document_id, entities)
 
+        # Auto-create patient if none was linked and a name was found in the document
+        await self._auto_create_patient(document_id, raw_text, extracted_data)
+
         logger.info(
             "document_processed",
             document_id=str(document_id),
             document_type=doc_type,
             processing_time_ms=elapsed_ms,
         )
+
+    async def _auto_create_patient(
+        self,
+        document_id: uuid.UUID,
+        raw_text: str,
+        extracted_data: dict[str, Any],
+    ) -> None:
+        """
+        Creates a patient record automatically from document text if the document
+        is not already linked to a patient.
+        Looks for common name patterns in English and Spanish clinical documents.
+        """
+        document = await self._doc_repo.get_by_id(document_id)
+        if document is None or document.patient_id is not None:
+            return  # already linked — nothing to do
+
+        name: str | None = None
+
+        # Pattern 1: "FULL NAME   James Robert Wilson" (tabular PDF layout)
+        m = re.search(
+            r"FULL\s+NAME[\s:]+([A-Z][a-záéíóúñ][\w]+(?: [A-Z][a-záéíóúñ][\w]+){1,3})",
+            raw_text,
+            re.IGNORECASE,
+        )
+        if m:
+            name = m.group(1).strip()
+
+        # Pattern 2: "Patient: James Wilson" or "Paciente: Juan García"
+        if not name:
+            m = re.search(
+                r"(?:Patient|Paciente)[\s:]+([A-Z][a-záéíóúñ][\w]+(?: [A-Z][a-záéíóúñ][\w]+){1,3})",
+                raw_text,
+                re.IGNORECASE,
+            )
+            if m:
+                name = m.group(1).strip()
+
+        # Pattern 3: structured data from NER extractor
+        if not name:
+            name = (
+                extracted_data.get("patient_name")
+                or extracted_data.get("nombre_paciente")
+                or extracted_data.get("paciente")
+            )
+
+        if not name:
+            logger.debug("auto_patient_skip_no_name", document_id=str(document_id))
+            return
+
+        # Split into first / last name
+        parts = name.split()
+        if len(parts) >= 2:
+            first_name = " ".join(parts[:-1])
+            last_name = parts[-1]
+        else:
+            first_name = parts[0]
+            last_name = ""
+
+        try:
+            patient = await self._patient_repo.create(
+                first_name=first_name,
+                last_name=last_name,
+            )
+            document.patient_id = patient.id
+            await self._session.flush()
+            logger.info(
+                "patient_auto_created",
+                patient_id=str(patient.id),
+                name=name,
+                document_id=str(document_id),
+            )
+        except Exception:
+            logger.warning("patient_auto_create_failed", document_id=str(document_id))
 
     async def _run_ocr(self, file_path: str, ext: str) -> tuple[str, float]:
         """Ejecuta OCR sobre el archivo."""
