@@ -108,8 +108,8 @@ class SearchService:
                 SourceReference(
                     document_id=c.document_id,
                     document_type=c.document_type,
-                    excerpt=c.chunk_text[:200],
-                    relevance_score=c.similarity_score,
+                    date=c.date or None,
+                    relevance=c.similarity_score,
                 )
                 for c in rag_response.sources
             ]
