@@ -22,14 +22,14 @@ export default function MessageBubble({ message }: Props) {
         {/* Confidence badge */}
         {!isUser && message.confidence != null && message.confidence > 0 && (
           <span className="badge bg-teal-50 text-medical-primary">
-            Confianza: {formatConfidence(message.confidence)}
+            Confidence: {formatConfidence(message.confidence)}
           </span>
         )}
 
         {/* Sources */}
         {!isUser && message.sources && message.sources.length > 0 && (
           <div className="border-t border-slate-100 pt-2">
-            <p className="text-xs font-medium text-slate-400">Fuentes:</p>
+            <p className="text-xs font-medium text-slate-400">Sources:</p>
             <div className="mt-1 space-y-1">
               {message.sources.map((src, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs text-slate-500">
@@ -50,7 +50,7 @@ export default function MessageBubble({ message }: Props) {
         <p
           className={`text-xs ${isUser ? "text-teal-200" : "text-slate-400"}`}
         >
-          {message.timestamp.toLocaleTimeString("es-MX", {
+          {message.timestamp.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
           })}

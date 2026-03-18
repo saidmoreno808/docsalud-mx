@@ -40,13 +40,13 @@ export default function PatientDetail() {
     enabled: !!id && tab === "alertas",
   });
 
-  if (isLoading) return <LoadingSpinner message="Cargando paciente..." />;
+  if (isLoading) return <LoadingSpinner message="Loading patient..." />;
   if (!patient) {
     return (
       <div className="flex flex-col items-center py-20">
-        <p className="text-slate-500">Paciente no encontrado</p>
+        <p className="text-slate-500">Patient not found</p>
         <button className="btn-secondary mt-4" onClick={() => navigate("/patients")}>
-          Volver a pacientes
+          Back to patients
         </button>
       </div>
     );
@@ -58,7 +58,7 @@ export default function PatientDetail() {
     <div className="space-y-6">
       <button className="btn-secondary" onClick={() => navigate("/patients")}>
         <ArrowLeft className="h-4 w-4" />
-        Volver
+        Back
       </button>
 
       {/* Patient card */}
@@ -70,16 +70,16 @@ export default function PatientDetail() {
             </h1>
             <div className="mt-1 flex flex-wrap gap-3 text-sm text-slate-500">
               {patient.external_id && <span>ID: {patient.external_id}</span>}
-              {age !== null && <span>{age} anos</span>}
-              {patient.gender && <span>{patient.gender === "M" ? "Masculino" : "Femenino"}</span>}
-              {patient.blood_type && <span>Sangre: {patient.blood_type}</span>}
-              <span>Registro: {formatDate(patient.created_at)}</span>
+              {age !== null && <span>{age} years</span>}
+              {patient.gender && <span>{patient.gender === "M" ? "Male" : "Female"}</span>}
+              {patient.blood_type && <span>Blood: {patient.blood_type}</span>}
+              <span>Registered: {formatDate(patient.created_at)}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <div className={`rounded-lg px-4 py-2 text-center ${riskScoreColor(patient.risk_score)}`}>
-              <p className="text-xs font-medium">Riesgo</p>
+              <p className="text-xs font-medium">Risk</p>
               <p className="text-lg font-bold">{riskScoreLabel(patient.risk_score)}</p>
               <p className="text-xs">{(patient.risk_score * 100).toFixed(0)}%</p>
             </div>
@@ -131,7 +131,7 @@ export default function PatientDetail() {
             }`}
             onClick={() => setTab(t)}
           >
-            {t === "documentos" ? "Documentos" : "Alertas"}
+            {t === "documentos" ? "Documents" : "Alerts"}
           </button>
         ))}
       </div>
@@ -150,9 +150,9 @@ export default function PatientDetail() {
             onSuccess: () => navigate("/patients"),
           });
         }}
-        title="Eliminar paciente"
-        message={`¿Estas seguro de eliminar a ${patient.first_name} ${patient.last_name}? Esta accion no se puede deshacer.`}
-        confirmLabel="Eliminar"
+        title="Delete patient"
+        message={`Are you sure you want to delete ${patient.first_name} ${patient.last_name}? This action cannot be undone.`}
+        confirmLabel="Delete"
         variant="danger"
       />
     </div>

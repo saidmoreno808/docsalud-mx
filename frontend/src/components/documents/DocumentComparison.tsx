@@ -18,7 +18,7 @@ export default function DocumentComparison({ documents }: Props) {
     return (
       <div className="card py-8 text-center">
         <p className="text-sm text-slate-400">
-          Se necesitan al menos 2 documentos para comparar
+          At least 2 documents are needed to compare
         </p>
       </div>
     );
@@ -27,7 +27,7 @@ export default function DocumentComparison({ documents }: Props) {
   return (
     <div className="space-y-4">
       <div className="rounded-lg bg-amber-50 p-3 text-center text-xs text-amber-700">
-        Proximamente: comparacion avanzada con resaltado de diferencias
+        Coming soon: advanced comparison with diff highlighting
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -41,7 +41,7 @@ export default function DocumentComparison({ documents }: Props) {
               onChange={(e) => setSelected(e.target.value)}
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
-              <option value="">{label}: seleccionar</option>
+              <option value="">{label}: select</option>
               {documents.map((d) => (
                 <option key={d.id} value={d.id}>
                   {d.original_filename ?? d.document_type} — {d.created_at.slice(0, 10)}

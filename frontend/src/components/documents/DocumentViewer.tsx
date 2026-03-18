@@ -37,7 +37,7 @@ export default function DocumentViewer({ document: doc }: Props) {
             {docTypeLabel(doc.document_type)}
           </h3>
           <p className="text-xs text-slate-400">
-            {doc.original_filename ?? "Sin nombre"} — {formatDate(doc.created_at)}
+            {doc.original_filename ?? "Unnamed"} — {formatDate(doc.created_at)}
             {doc.processing_time_ms != null &&
               ` — ${formatProcessingTime(doc.processing_time_ms)}`}
           </p>
@@ -74,7 +74,7 @@ export default function DocumentViewer({ document: doc }: Props) {
           </pre>
         </div>
       ) : (
-        <p className="text-sm text-slate-400">Sin texto extraido</p>
+        <p className="text-sm text-slate-400">No extracted text</p>
       )}
     </div>
   );

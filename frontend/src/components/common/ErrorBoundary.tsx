@@ -22,16 +22,16 @@ export default class ErrorBoundary extends Component<Props, State> {
         <div className="flex flex-col items-center justify-center gap-4 py-20">
           <AlertTriangle className="h-12 w-12 text-severity-medium" />
           <h2 className="text-lg font-semibold text-slate-800">
-            Algo salio mal
+            Something went wrong
           </h2>
           <p className="text-sm text-slate-500">
-            Ocurrio un error inesperado.
+            An unexpected error occurred.
           </p>
           <button
             className="btn-secondary"
             onClick={() => this.setState({ hasError: false })}
           >
-            Reintentar
+            Retry
           </button>
         </div>
       );

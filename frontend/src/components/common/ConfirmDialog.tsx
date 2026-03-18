@@ -17,8 +17,8 @@ export default function ConfirmDialog({
   onConfirm,
   title,
   message,
-  confirmLabel = "Confirmar",
-  cancelLabel = "Cancelar",
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
   variant = "danger",
 }: Props) {
   useEffect(() => {

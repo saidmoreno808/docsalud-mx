@@ -49,27 +49,27 @@ export default function UploadProgress({ documentId }: Props) {
   return (
     <div className="card space-y-4">
       <h3 className="text-sm font-semibold text-slate-700">
-        Procesando documento
+        Processing document
       </h3>
 
       <div className="space-y-3">
         <Step
-          label="Documento recibido"
+          label="Document received"
           done={s !== "pending"}
           active={s === "pending"}
         />
         <Step
-          label="OCR en proceso"
+          label="OCR in progress"
           done={isCompleted}
           active={s === "processing"}
           detail={
             status?.ocr_confidence
-              ? `Confianza: ${formatConfidence(status.ocr_confidence)}`
+              ? `Confidence: ${formatConfidence(status.ocr_confidence)}`
               : undefined
           }
         />
         <Step
-          label="Clasificacion"
+          label="Classification"
           done={isCompleted && !!status?.document_type}
           active={false}
           detail={
@@ -82,17 +82,17 @@ export default function UploadProgress({ documentId }: Props) {
           <div className="flex items-center gap-3">
             <XCircle className="h-5 w-5 text-severity-critical" />
             <p className="text-sm font-medium text-severity-critical">
-              Error al procesar documento
+              Error processing document
             </p>
           </div>
         ) : (
-          <Step label="Completado" done={isCompleted} active={false} />
+          <Step label="Completed" done={isCompleted} active={false} />
         )}
       </div>
 
       {isCompleted && status?.processing_time_ms && (
         <p className="text-xs text-slate-400">
-          Procesado en {formatProcessingTime(status.processing_time_ms)}
+          Processed in {formatProcessingTime(status.processing_time_ms)}
         </p>
       )}
     </div>

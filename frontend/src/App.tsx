@@ -19,7 +19,7 @@ function DashboardPage() {
       <div>
         <h1 className="text-xl font-bold text-slate-800">Dashboard</h1>
         <p className="text-sm text-slate-500">
-          Resumen del sistema ClinicaIA
+          System overview
         </p>
       </div>
       <StatsCards />
@@ -39,9 +39,9 @@ function SearchPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-slate-800">Busqueda</h1>
+        <h1 className="text-xl font-bold text-slate-800">Search</h1>
         <p className="text-sm text-slate-500">
-          Busqueda semantica sobre expedientes
+          Semantic search over clinical records
         </p>
       </div>
 
@@ -49,7 +49,7 @@ function SearchPage() {
         <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         <input
           type="text"
-          placeholder="Buscar en documentos clinicos..."
+          placeholder="Search clinical documents..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full rounded-lg border border-slate-300 py-3 pl-10 pr-4 text-sm focus:border-medical-primary focus:outline-none focus:ring-1 focus:ring-medical-primary"
@@ -57,7 +57,7 @@ function SearchPage() {
       </div>
 
       {isLoading && query.length >= 2 && (
-        <p className="text-sm text-slate-400">Buscando...</p>
+        <p className="text-sm text-slate-400">Searching...</p>
       )}
 
       {data?.results && data.results.length > 0 && (
@@ -69,7 +69,7 @@ function SearchPage() {
                   {docTypeLabel(r.document_type)}
                 </span>
                 <span className="text-xs text-slate-400">
-                  Relevancia: {formatConfidence(r.similarity_score)}
+                  Relevance: {formatConfidence(r.similarity_score)}
                 </span>
               </div>
               <p className="mt-2 text-sm text-slate-700">
@@ -77,7 +77,7 @@ function SearchPage() {
               </p>
               {r.patient_name && (
                 <p className="mt-1 text-xs text-slate-400">
-                  Paciente: {r.patient_name}
+                  Patient: {r.patient_name}
                 </p>
               )}
             </div>
@@ -87,7 +87,7 @@ function SearchPage() {
 
       {data?.results && data.results.length === 0 && query.length >= 2 && (
         <p className="py-8 text-center text-sm text-slate-400">
-          Sin resultados para "{query}"
+          No results for "{query}"
         </p>
       )}
     </div>

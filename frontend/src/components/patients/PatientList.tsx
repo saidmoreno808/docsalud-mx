@@ -33,35 +33,35 @@ export default function PatientList() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-slate-800">Pacientes</h1>
+        <h1 className="text-xl font-bold text-slate-800">Patients</h1>
         <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
           <Plus className="h-4 w-4" />
-          Registrar
+          Register
         </button>
       </div>
 
       {showForm && (
         <form onSubmit={handleCreate} className="card grid grid-cols-2 gap-4">
-          <input name="first_name" placeholder="Nombre *" required className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
-          <input name="last_name" placeholder="Apellidos *" required className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          <input name="first_name" placeholder="First name *" required className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          <input name="last_name" placeholder="Last name *" required className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
           <input name="external_id" placeholder="CURP / ID" className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
           <select name="gender" className="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-            <option value="">Genero</option>
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
+            <option value="">Gender</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
           </select>
           <select name="blood_type" className="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-            <option value="">Tipo de sangre</option>
+            <option value="">Blood type</option>
             {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
           <div className="flex items-end gap-2">
             <button type="submit" className="btn-primary" disabled={createPatient.isPending}>
-              Guardar
+              Save
             </button>
             <button type="button" className="btn-secondary" onClick={() => setShowForm(false)}>
-              Cancelar
+              Cancel
             </button>
           </div>
         </form>
@@ -71,7 +71,7 @@ export default function PatientList() {
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         <input
           type="text"
-          placeholder="Buscar por nombre o CURP..."
+          placeholder="Search by name or CURP..."
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           className="w-full rounded-lg border border-slate-300 py-2 pl-10 pr-4 text-sm"
@@ -79,11 +79,11 @@ export default function PatientList() {
       </div>
 
       {isLoading ? (
-        <LoadingSpinner message="Cargando pacientes..." />
+        <LoadingSpinner message="Loading patients..." />
       ) : !data || data.items.length === 0 ? (
         <div className="card flex flex-col items-center py-16">
           <Users className="h-12 w-12 text-slate-300" />
-          <p className="mt-3 text-sm text-slate-500">No hay pacientes registrados</p>
+          <p className="mt-3 text-sm text-slate-500">No registered patients</p>
         </div>
       ) : (
         <>
@@ -91,10 +91,10 @@ export default function PatientList() {
             <table className="w-full text-sm">
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
-                  <th className="px-4 py-3 text-left font-medium text-slate-600">Nombre</th>
+                  <th className="px-4 py-3 text-left font-medium text-slate-600">Name</th>
                   <th className="px-4 py-3 text-left font-medium text-slate-600">ID</th>
-                  <th className="px-4 py-3 text-left font-medium text-slate-600">Condiciones</th>
-                  <th className="px-4 py-3 text-left font-medium text-slate-600">Riesgo</th>
+                  <th className="px-4 py-3 text-left font-medium text-slate-600">Conditions</th>
+                  <th className="px-4 py-3 text-left font-medium text-slate-600">Risk</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +130,7 @@ export default function PatientList() {
 
           <div className="flex items-center justify-between">
             <p className="text-sm text-slate-500">
-              {data.total} pacientes — Pagina {data.page} de {data.pages}
+              {data.total} patients — Page {data.page} of {data.pages}
             </p>
             <div className="flex gap-2">
               <button className="btn-secondary" disabled={page <= 1} onClick={() => setPage(page - 1)}>

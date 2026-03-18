@@ -8,9 +8,9 @@ import QuerySuggestions from "./QuerySuggestions";
 
 const QUERY_TYPES: { value: QueryType; label: string }[] = [
   { value: "general", label: "General" },
-  { value: "medicamentos", label: "Medicamentos" },
-  { value: "laboratorio", label: "Laboratorio" },
-  { value: "alertas", label: "Alertas" },
+  { value: "medicamentos", label: "Medications" },
+  { value: "laboratorio", label: "Laboratory" },
+  { value: "alertas", label: "Alerts" },
 ];
 
 export default function ChatInterface() {
@@ -45,9 +45,9 @@ export default function ChatInterface() {
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-200 pb-3">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Consulta IA</h1>
+          <h1 className="text-xl font-bold text-slate-800">AI Consultation</h1>
           <p className="text-xs text-slate-500">
-            Haz preguntas sobre expedientes clinicos
+            Ask questions about clinical records
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -56,7 +56,7 @@ export default function ChatInterface() {
             onChange={(e) => setPatientId(e.target.value || null)}
             className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
           >
-            <option value="">Todos los pacientes</option>
+            <option value="">All patients</option>
             {patients?.items.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.first_name} {p.last_name}
@@ -67,7 +67,7 @@ export default function ChatInterface() {
             <button
               className="rounded-lg p-2 text-slate-400 hover:bg-slate-100"
               onClick={clearMessages}
-              title="Limpiar conversacion"
+              title="Clear conversation"
             >
               <Trash2 className="h-4 w-4" />
             </button>
@@ -80,7 +80,7 @@ export default function ChatInterface() {
         {messages.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-4">
             <p className="text-sm text-slate-400">
-              Inicia una conversacion sobre expedientes clinicos
+              Start a conversation about clinical records
             </p>
             <QuerySuggestions onSelect={(q) => setInput(q)} />
           </div>
@@ -135,7 +135,7 @@ export default function ChatInterface() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Escribe tu consulta..."
+            placeholder="Type your query..."
             rows={1}
             className="flex-1 resize-none rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-medical-primary focus:outline-none focus:ring-1 focus:ring-medical-primary"
           />

@@ -44,7 +44,7 @@ export default function RiskGauge({ riskScore, riskLevel }: RiskGaugeProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <svg width="200" height="120" viewBox="0 0 200 120" aria-label={`Riesgo ${filled}/100`}>
+      <svg width="200" height="120" viewBox="0 0 200 120" aria-label={`Risk ${filled}/100`}>
         {/* Background arc */}
         <path
           d={d}

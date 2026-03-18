@@ -53,7 +53,7 @@ export default function DocumentUploader() {
       <div className="mx-auto max-w-2xl">
         <UploadProgress documentId={documentId} />
         <button className="btn-secondary mt-4 w-full" onClick={handleReset}>
-          Subir otro documento
+          Upload another document
         </button>
       </div>
     );
@@ -62,9 +62,9 @@ export default function DocumentUploader() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="text-xl font-bold text-slate-800">Subir Documento</h1>
+        <h1 className="text-xl font-bold text-slate-800">Upload Document</h1>
         <p className="text-sm text-slate-500">
-          Sube una imagen o PDF de un expediente clinico
+          Upload an image or PDF of a clinical record
         </p>
       </div>
 
@@ -82,11 +82,11 @@ export default function DocumentUploader() {
             <Upload className="h-10 w-10 text-slate-400" />
             <p className="mt-3 text-sm font-medium text-slate-600">
               {isDragActive
-                ? "Suelta el archivo aqui"
-                : "Arrastra un archivo o haz clic para seleccionar"}
+                ? "Drop the file here"
+                : "Drag a file or click to select"}
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              JPG, PNG o PDF — Maximo 10 MB
+              JPG, PNG or PDF — Maximum 10 MB
             </p>
           </div>
 
@@ -124,14 +124,14 @@ export default function DocumentUploader() {
 
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">
-              Paciente (opcional)
+              Patient (optional)
             </label>
             <select
               value={patientId}
               onChange={(e) => setPatientId(e.target.value)}
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
-              <option value="">Sin paciente asignado</option>
+              <option value="">No patient assigned</option>
               {patients?.items.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.first_name} {p.last_name}
@@ -145,7 +145,7 @@ export default function DocumentUploader() {
             onClick={handleUpload}
             disabled={upload.isPending}
           >
-            {upload.isPending ? "Subiendo..." : "Subir Documento"}
+            {upload.isPending ? "Uploading..." : "Upload Document"}
           </button>
         </div>
       )}

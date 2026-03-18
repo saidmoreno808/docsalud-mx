@@ -32,10 +32,10 @@ export default function PatientTimeline({ documents }: Props) {
       <div className="card flex flex-col items-center py-10">
         <File className="h-10 w-10 text-slate-300" />
         <p className="mt-3 text-sm text-slate-500">
-          No hay documentos para este paciente
+          No documents for this patient
         </p>
         <Link to="/upload" className="btn-primary mt-4">
-          Subir documento
+          Upload document
         </Link>
       </div>
     );
@@ -90,7 +90,7 @@ export default function PatientTimeline({ documents }: Props) {
 
             {doc.entities.length > 0 && (
               <p className="mt-1 text-xs text-medical-primary">
-                {doc.entities.length} entidades extraidas
+                {doc.entities.length} extracted entities
               </p>
             )}
           </div>

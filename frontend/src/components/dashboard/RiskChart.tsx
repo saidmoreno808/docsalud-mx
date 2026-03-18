@@ -3,10 +3,10 @@ import { usePatients } from "@/hooks/usePatients";
 import type { Patient } from "@/types";
 
 const RISK_LEVELS = [
-  { name: "Bajo", min: 0, max: 0.25, color: "#16A34A" },
-  { name: "Medio", min: 0.25, max: 0.5, color: "#F59E0B" },
-  { name: "Alto", min: 0.5, max: 0.75, color: "#EA580C" },
-  { name: "Critico", min: 0.75, max: 1.01, color: "#DC2626" },
+  { name: "Low", min: 0, max: 0.25, color: "#16A34A" },
+  { name: "Medium", min: 0.25, max: 0.5, color: "#F59E0B" },
+  { name: "High", min: 0.5, max: 0.75, color: "#EA580C" },
+  { name: "Critical", min: 0.75, max: 1.01, color: "#DC2626" },
 ];
 
 function groupByRisk(patients: Patient[]) {
@@ -27,7 +27,7 @@ export default function RiskChart() {
     return (
       <div className="card flex flex-col items-center justify-center py-10">
         <p className="text-sm text-slate-500">
-          Registre pacientes para ver distribucion de riesgo
+          Register patients to view risk distribution
         </p>
       </div>
     );
@@ -38,7 +38,7 @@ export default function RiskChart() {
   return (
     <div className="card">
       <h3 className="mb-4 text-sm font-semibold text-slate-700">
-        Distribucion de Riesgo
+        Risk Distribution
       </h3>
       <ResponsiveContainer width="100%" height={250}>
         <PieChart>

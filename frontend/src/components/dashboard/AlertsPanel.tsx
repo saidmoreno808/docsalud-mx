@@ -25,7 +25,7 @@ export default function AlertsPanel() {
       <div className="card flex flex-col items-center justify-center py-10">
         <CheckCircle className="h-10 w-10 text-success" />
         <p className="mt-3 text-sm font-medium text-slate-500">
-          Sin alertas activas
+          No active alerts
         </p>
       </div>
     );
@@ -35,18 +35,18 @@ export default function AlertsPanel() {
     <div className="card">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm font-semibold text-slate-700">
-          Alertas Activas
+          Active Alerts
         </h3>
         {summary && (
           <div className="flex gap-2">
             {summary.critical > 0 && (
               <span className="badge bg-red-100 text-severity-critical">
-                {summary.critical} criticas
+                {summary.critical} critical
               </span>
             )}
             {summary.high > 0 && (
               <span className="badge bg-orange-100 text-severity-high">
-                {summary.high} altas
+                {summary.high} high
               </span>
             )}
           </div>

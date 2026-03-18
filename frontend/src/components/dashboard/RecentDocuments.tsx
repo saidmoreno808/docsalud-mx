@@ -18,10 +18,10 @@ export default function RecentDocuments({ documents }: Props) {
       <div className="card flex flex-col items-center justify-center py-10">
         <FileText className="h-10 w-10 text-slate-300" />
         <p className="mt-3 text-sm font-medium text-slate-500">
-          No hay documentos procesados
+          No processed documents
         </p>
         <Link to="/upload" className="btn-primary mt-4">
-          Subir primer documento
+          Upload first document
         </Link>
       </div>
     );
@@ -31,7 +31,7 @@ export default function RecentDocuments({ documents }: Props) {
     <div className="card">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm font-semibold text-slate-700">
-          Documentos Recientes
+          Recent Documents
         </h3>
       </div>
       <div className="space-y-3">
@@ -44,7 +44,7 @@ export default function RecentDocuments({ documents }: Props) {
               <FileText className="h-4 w-4 text-slate-400" />
               <div>
                 <p className="text-sm font-medium text-slate-700">
-                  {truncate(doc.original_filename ?? "Sin nombre", 30)}
+                  {truncate(doc.original_filename ?? "Unnamed", 30)}
                 </p>
                 <p className="text-xs text-slate-400">
                   {docTypeLabel(doc.document_type)}

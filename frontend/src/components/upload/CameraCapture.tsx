@@ -21,7 +21,7 @@ export default function CameraCapture({ onCapture }: Props) {
       setStream(mediaStream);
       setError(null);
     } catch {
-      setError("No se pudo acceder a la camara");
+      setError("Could not access the camera");
     }
   }, []);
 
@@ -60,7 +60,7 @@ export default function CameraCapture({ onCapture }: Props) {
     return (
       <button className="btn-secondary w-full" onClick={startCamera}>
         <Camera className="h-4 w-4" />
-        Tomar Foto
+        Take Photo
       </button>
     );
   }
@@ -68,7 +68,7 @@ export default function CameraCapture({ onCapture }: Props) {
   return (
     <div className="card space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-slate-700">Camara</span>
+        <span className="text-sm font-medium text-slate-700">Camera</span>
         <button
           className="rounded-lg p-1 text-slate-400 hover:bg-slate-100"
           onClick={stopCamera}
@@ -83,7 +83,7 @@ export default function CameraCapture({ onCapture }: Props) {
         className="w-full rounded-lg"
       />
       <button className="btn-primary w-full" onClick={capture}>
-        Capturar
+        Capture
       </button>
     </div>
   );

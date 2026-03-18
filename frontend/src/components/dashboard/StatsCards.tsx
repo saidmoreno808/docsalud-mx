@@ -44,27 +44,27 @@ export default function StatsCards() {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <StatCard
         icon={<Users className="h-6 w-6 text-medical-primary" />}
-        label="Pacientes Registrados"
+        label="Registered Patients"
         value={totalPatients}
         colorClass="bg-teal-50"
       />
       <StatCard
         icon={<FileText className="h-6 w-6 text-medical-secondary" />}
-        label="Documentos Procesados"
+        label="Processed Documents"
         value={0}
-        subtitle="Sin datos aun"
+        subtitle="No data yet"
         colorClass="bg-blue-50"
       />
       <StatCard
         icon={<AlertTriangle className="h-6 w-6 text-severity-medium" />}
-        label="Alertas Activas"
+        label="Active Alerts"
         value={alertCount}
-        subtitle={criticalCount > 0 ? `${criticalCount} criticas` : undefined}
+        subtitle={criticalCount > 0 ? `${criticalCount} critical` : undefined}
         colorClass="bg-amber-50"
       />
       <StatCard
         icon={<Activity className="h-6 w-6 text-severity-high" />}
-        label="Riesgo Promedio"
+        label="Average Risk"
         value={riskLabel}
         subtitle={`Score: ${avgRisk.toFixed(2)}`}
         colorClass={riskColor}

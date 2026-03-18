@@ -34,7 +34,7 @@ export default function ExtractedData({ entities }: Props) {
     return (
       <div className="card py-8 text-center">
         <p className="text-sm text-slate-400">
-          No se extrajeron entidades de este documento
+          No entities were extracted from this document
         </p>
       </div>
     );
@@ -45,7 +45,7 @@ export default function ExtractedData({ entities }: Props) {
   return (
     <div className="card space-y-4">
       <h3 className="text-sm font-semibold text-slate-700">
-        Entidades Extraidas ({entities.length})
+        Extracted Entities ({entities.length})
       </h3>
 
       {Object.entries(groups).map(([type, items]) => (

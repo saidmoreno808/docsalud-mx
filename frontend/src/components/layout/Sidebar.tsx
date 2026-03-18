@@ -15,10 +15,10 @@ interface Props {
 
 const navItems = [
   { to: "/", icon: LayoutDashboard, label: "Dashboard" },
-  { to: "/upload", icon: Upload, label: "Subir Documento" },
-  { to: "/patients", icon: Users, label: "Pacientes" },
-  { to: "/search", icon: Search, label: "Busqueda" },
-  { to: "/chat", icon: MessageCircle, label: "Consulta IA" },
+  { to: "/upload", icon: Upload, label: "Upload Document" },
+  { to: "/patients", icon: Users, label: "Patients" },
+  { to: "/search", icon: Search, label: "Search" },
+  { to: "/chat", icon: MessageCircle, label: "AI Consultation" },
 ];
 
 export default function Sidebar({ isOpen, onClose }: Props) {

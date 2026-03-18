@@ -3,11 +3,11 @@ interface Props {
 }
 
 const SUGGESTIONS = [
-  "Cual es el historial del paciente?",
-  "Que medicamentos tiene activos?",
-  "Ultimos resultados de laboratorio",
-  "Hay alertas de riesgo?",
-  "Resume las ultimas consultas",
+  "What is the patient's history?",
+  "What medications are currently active?",
+  "Latest laboratory results",
+  "Are there any risk alerts?",
+  "Summarize the latest consultations",
 ];
 
 export default function QuerySuggestions({ onSelect }: Props) {

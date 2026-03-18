@@ -1,5 +1,5 @@
 import { format, formatDistanceToNow, differenceInYears, parseISO } from "date-fns";
-import { es } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 
 export function formatDate(iso: string): string {
   return format(parseISO(iso), "dd/MM/yyyy");
@@ -10,7 +10,7 @@ export function formatDateTime(iso: string): string {
 }
 
 export function formatRelativeTime(iso: string): string {
-  return formatDistanceToNow(parseISO(iso), { addSuffix: true, locale: es });
+  return formatDistanceToNow(parseISO(iso), { addSuffix: true, locale: enUS });
 }
 
 export function calculateAge(dateOfBirth: string): number {
@@ -18,10 +18,10 @@ export function calculateAge(dateOfBirth: string): number {
 }
 
 export function riskScoreLabel(score: number): string {
-  if (score >= 0.75) return "Critico";
-  if (score >= 0.5) return "Alto";
-  if (score >= 0.25) return "Medio";
-  return "Bajo";
+  if (score >= 0.75) return "Critical";
+  if (score >= 0.5) return "High";
+  if (score >= 0.25) return "Medium";
+  return "Low";
 }
 
 export function riskScoreColor(score: number): string {
@@ -47,22 +47,22 @@ export function severityColor(severity: string): {
 
 export function severityLabel(severity: string): string {
   const labels: Record<string, string> = {
-    critical: "Critico",
-    high: "Alto",
-    medium: "Medio",
-    low: "Bajo",
+    critical: "Critical",
+    high: "High",
+    medium: "Medium",
+    low: "Low",
   };
   return labels[severity] ?? severity;
 }
 
 export function docTypeLabel(docType: string): string {
   const labels: Record<string, string> = {
-    receta: "Receta",
-    laboratorio: "Laboratorio",
-    nota_medica: "Nota Medica",
-    referencia: "Referencia",
-    consentimiento: "Consentimiento",
-    otro: "Otro",
+    receta: "Prescription",
+    laboratorio: "Laboratory",
+    nota_medica: "Medical Note",
+    referencia: "Referral",
+    consentimiento: "Consent",
+    otro: "Other",
   };
   return labels[docType] ?? docType;
 }
