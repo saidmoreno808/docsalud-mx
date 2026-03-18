@@ -83,5 +83,18 @@ class Settings(BaseSettings):
         """Retorna lista de origenes CORS permitidos."""
         return [origin.strip() for origin in self.cors_origins.split(",")]
 
+    @property
+    def async_database_url(self) -> str:
+        """
+        Convierte el DATABASE_URL de DO (postgres:// o postgresql://)
+        al formato requerido por SQLAlchemy + asyncpg.
+        """
+        url = self.database_url
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql+asyncpg://", 1)
+        elif url.startswith("postgresql://"):
+            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return url
+
 
 settings = Settings()
