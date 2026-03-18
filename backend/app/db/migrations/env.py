@@ -16,7 +16,7 @@ from app.db.database import Base
 from app.db.models import Alert, DiagnosticResult, Document, DocumentEmbedding, ExtractedEntity, Patient  # noqa: F401
 
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.database_url)
+config.set_main_option("sqlalchemy.url", settings.async_database_url)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -47,10 +47,19 @@ def do_run_migrations(connection) -> None:  # type: ignore[no-untyped-def]
 
 async def run_async_migrations() -> None:
     """Run migrations in async mode."""
+    import ssl as ssl_module
+    connect_args: dict = {}
+    if settings.db_requires_ssl:
+        ssl_ctx = ssl_module.create_default_context()
+        ssl_ctx.check_hostname = False
+        ssl_ctx.verify_mode = ssl_module.CERT_NONE
+        connect_args = {"ssl": ssl_ctx}
+
     connectable = async_engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        connect_args=connect_args,
     )
 
     async with connectable.connect() as connection:
