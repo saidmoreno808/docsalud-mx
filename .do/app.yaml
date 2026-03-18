@@ -31,7 +31,7 @@ services:
         type: SECRET
       - key: DO_GRADIENT_MODEL
         scope: RUN_TIME
-        value: llama3-3-70b-instruct
+        value: llama3.3-70b-instruct
       - key: ENVIRONMENT
         scope: RUN_TIME
         value: production

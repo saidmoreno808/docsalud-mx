@@ -118,6 +118,19 @@ async def _build_patient_data(patient: Patient, db: AsyncSession) -> dict:
                 valor = res.get("valor")
                 if analisis and valor is not None:
                     lab_values[analisis] = valor
+        else:
+            # "otro" / "nota_medica" — extract diagnoses and meds from NER structured data
+            for dx in data.get("diagnosticos", []):
+                if dx and dx not in diagnoses:
+                    diagnoses.append(dx)
+            for med in data.get("medicamentos", []):
+                nombre = med.get("nombre", med) if isinstance(med, dict) else med
+                if nombre and nombre not in medications:
+                    medications.append(nombre)
+            # lab values stored as flat dict in "valores_laboratorio"
+            for k, v in data.get("valores_laboratorio", {}).items():
+                if k and v is not None:
+                    lab_values[k] = v
 
     # Fallback: get medications from NER entities
     if not medications and doc_ids:

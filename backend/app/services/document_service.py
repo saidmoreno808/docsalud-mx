@@ -170,10 +170,33 @@ class DocumentService:
             first_name = parts[0]
             last_name = ""
 
+        # Try to extract date of birth and gender from raw_text
+        dob = None
+        gender = None
+        dob_match = re.search(
+            r"DATE\s+OF\s+BIRTH[\s:]+(\w+ \d{1,2},?\s*\d{4}|\d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2})",
+            raw_text, re.IGNORECASE,
+        )
+        if dob_match:
+            from datetime import datetime
+            for fmt in ("%B %d, %Y", "%B %d %Y", "%m/%d/%Y", "%Y-%m-%d"):
+                try:
+                    dob = datetime.strptime(dob_match.group(1).replace(",", ""), fmt.replace(",", "")).date()
+                    break
+                except ValueError:
+                    continue
+
+        gender_match = re.search(r"GENDER[\s:]+(\w+)", raw_text, re.IGNORECASE)
+        if gender_match:
+            g = gender_match.group(1).lower()
+            gender = "masculino" if g in ("male", "masculino", "m") else "femenino" if g in ("female", "femenino", "f") else None
+
         try:
             patient = await self._patient_repo.create(
                 first_name=first_name,
                 last_name=last_name,
+                date_of_birth=dob,
+                gender=gender,
             )
             document.patient_id = patient.id
             await self._session.flush()
