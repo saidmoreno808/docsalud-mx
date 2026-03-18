@@ -153,9 +153,7 @@ export default function DiagnosticPanel({
           <ol className="space-y-1.5">
             {result.recommendations.map((item, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-100 text-xs font-bold text-teal-700">
-                  {i + 1}
-                </span>
+                <CheckCircleIcon />
                 <span>{item}</span>
               </li>
             ))}
