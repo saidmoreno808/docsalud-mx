@@ -38,17 +38,19 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     setup_logging()
     logger.info("starting_application", app_name=settings.app_name, env=settings.app_env)
 
-    # Verify database connection
+    # Connect to DB and create all tables if they don't exist
     try:
-        from app.db.database import engine
+        from app.db.database import Base, engine
+        from app.db import models  # noqa: F401 — ensure all models are registered
 
         async with engine.begin() as conn:
             from sqlalchemy import text
-
             await conn.execute(text("SELECT 1"))
-        logger.info("database_connected")
-    except Exception:
-        logger.warning("database_connection_failed")
+            # Create tables (idempotent — safe to run on every startup)
+            await conn.run_sync(Base.metadata.create_all)
+        logger.info("database_connected_and_tables_ready")
+    except Exception as e:
+        logger.warning("database_init_failed", error=str(e))
 
     yield
 
