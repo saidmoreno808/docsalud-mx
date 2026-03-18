@@ -15,15 +15,19 @@ from app.config import settings
 def _build_connect_args() -> dict:
     """
     Construye connect_args para asyncpg.
-    DO Managed PostgreSQL requiere SSL pero usa self-signed cert en la cadena,
-    por lo que se deshabilita la verificacion del certificado.
+    - SSL sin verificacion de cert (DO managed PG usa self-signed chain)
+    - search_path apunta al schema 'app' (usuario propio) para evitar el
+      restriction de PG 15 sobre CREATE en schema 'public'
     """
-    if not settings.db_requires_ssl:
-        return {}
-    ssl_ctx = ssl.create_default_context()
-    ssl_ctx.check_hostname = False
-    ssl_ctx.verify_mode = ssl.CERT_NONE
-    return {"ssl": ssl_ctx}
+    connect_args: dict = {
+        "server_settings": {"search_path": "app,public"},
+    }
+    if settings.db_requires_ssl:
+        ssl_ctx = ssl.create_default_context()
+        ssl_ctx.check_hostname = False
+        ssl_ctx.verify_mode = ssl.CERT_NONE
+        connect_args["ssl"] = ssl_ctx
+    return connect_args
 
 
 engine = create_async_engine(
