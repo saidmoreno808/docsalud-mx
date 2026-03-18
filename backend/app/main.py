@@ -50,6 +50,22 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     except Exception as e:
         logger.error("database_connection_failed", error=str(e))
 
+    # Diagnose DB user + permissions
+    try:
+        from app.db.database import engine
+        from sqlalchemy import text
+
+        async with engine.begin() as conn:
+            r = await conn.execute(text(
+                "SELECT current_user, "
+                "has_schema_privilege(current_user, 'public', 'CREATE') AS pub_create, "
+                "has_database_privilege(current_user, current_database(), 'CREATE') AS db_create"
+            ))
+            row = r.fetchone()
+            logger.info("db_diagnostics", user=row[0], pub_create=row[1], db_create=row[2])
+    except Exception as diag_err:
+        logger.warning("db_diagnostics_failed", error=str(diag_err))
+
     # Transaction 1: create 'app' schema owned by current user
     # (avoids PG 15 restriction on CREATE in public schema)
     try:
