@@ -78,7 +78,18 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     except Exception as schema_err:
         logger.warning("app_schema_create_skipped", error=str(schema_err))
 
-    # Transaction 2: create all tables inside 'app' schema (via search_path)
+    # Transaction 2: install pgvector extension (requires superuser/rds_superuser)
+    try:
+        from app.db.database import engine
+        from sqlalchemy import text
+
+        async with engine.begin() as conn:
+            await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+        logger.info("pgvector_extension_ready")
+    except Exception as ext_err:
+        logger.warning("pgvector_extension_skipped", error=str(ext_err))
+
+    # Transaction 3: create all tables
     try:
         from app.db.database import Base, engine
 

@@ -235,7 +235,7 @@ class DocumentEmbedding(Base):
     )
     chunk_index: Mapped[int] = mapped_column(Integer, nullable=False)
     chunk_text: Mapped[str] = mapped_column(Text, nullable=False)
-    embedding = mapped_column(Vector(1536), nullable=True)
+    embedding = mapped_column(Vector(384), nullable=True)
     metadata_: Mapped[dict] = mapped_column("metadata", JSONB, default=dict)
 
     # Relationships
